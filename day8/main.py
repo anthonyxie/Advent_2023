@@ -1,4 +1,4 @@
-
+import math
 input_array = []
 directions = ""
 d = {}
@@ -43,18 +43,9 @@ for curr_loc in curr_locations:
     ee.append(i)
 print(ee)
 
-def gcd(a, b):
-    """Return greatest common divisor using Euclid's Algorithm."""
-    while b:      
-        a, b = b, a % b
-    return a
 
-def lcm(a, b):
-    """Return lowest common multiple."""
-    return a * b // gcd(a, b)
+print(math.lcm(*ee))
 
-print(lcm(19631, lcm(17287, lcm(12599, lcm(23147, lcm(13771, 20803))))))
-print(19631 * 17287 * 12599 * 23147 * 13771 * 20803)
 # def checkAllTrue(list):
 #     return False not in list
 
