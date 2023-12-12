@@ -15,7 +15,7 @@ with open('input.txt') as f:
             current_dict[(end, end + range_amt - 1)] = (start, start + range_amt - 1)
     dicts.append(current_dict)
 print(seeds)
-print(dicts)
+#print(dicts)
 
 seed_ranges = []
 for i in range(0,len(seeds),2):
@@ -68,32 +68,44 @@ def fill_gaps(lst, min_val, max_val):
         result_list.append((current_min, max_val))
     return result_list
 
-for min, max in seed_ranges:
-    overlaps = []
-    d = {}
-    for start, end in dicts[0]:
-        next_start, next_end = dicts[0][(start, end)]
-        offset = next_start - start
-        if min < start and max < start:
-            #do nothing
-            continue
-        elif min > end and max > end:
-            continue
-        elif min > start and max > end and min < end:
-            overlaps.append((min, end))
-            d[(min, end)] = (min + offset, end + offset)
-        elif start > min and start < max and end > max:
-            overlaps.append((start, max))
-            d[(start, max)] = (start + offset, max + offset)
-        elif start > min and end > min and start < max and end < max:
-            overlaps.append((start, end))
-            d[(start, end)] = (start + offset, end + offset)
-        elif min > start and max > start and min < end and max < end:
-            overlaps.append((min, max))
-            d[(min, max)] = (min + offset, max + offset)
-    overlaps.sort()
-    print("doggis", overlaps)
-    print(min, max)
-    print(fill_gaps(overlaps, min, max))
+output = []
+for min_val, max_val in seed_ranges:
+    overlaps = [(min_val, max_val)]
+    i = 0
+    while i <= len(dicts) - 1:
+        d = {}
+        all_overlaps = []
+        for min_val, max in overlaps:
+            new_overlaps = []
+            for start, end in dicts[i]:
+                next_start, next_end = dicts[i][(start, end)]
+                offset = next_start - start
+                if min_val < start and max < start:
+                    continue
+                elif min_val > end and max > end:
+                    continue
+                elif min_val > start and max > end and min_val < end:
+                    new_overlaps.append((min_val, end))
+                    d[(min_val, end)] = (min_val + offset, end + offset)
+                elif start > min_val and start < max and end > max:
+                    new_overlaps.append((start, max))
+                    d[(start, max)] = (start + offset, max + offset)
+                elif start > min_val and end > min_val and start < max and end < max:
+                    new_overlaps.append((start, end))
+                    d[(start, end)] = (start + offset, end + offset)
+                elif min_val > start and max > start and min_val < end and max < end:
+                    new_overlaps.append((min_val, max))
+                    d[(min_val, max)] = (min_val + offset, max + offset)
+            new_overlaps.sort()
+            new_overlaps = fill_gaps(new_overlaps, min_val, max)
+            for ind, overlap in enumerate(new_overlaps):
+                if overlap in d:
+                    new_overlaps[ind] = d[overlap]
+            all_overlaps += new_overlaps
+        overlaps = all_overlaps
+        i += 1
+    print(overlaps)
+    output.append(min([ol[0] for ol in overlaps]))
+print(min(output))
             
             
