@@ -1,3 +1,6 @@
+def printy(grid):
+    for l in grid:
+        print(l)
 doggis = []
 with open('input.txt') as f:
     for index, line in enumerate(f):
