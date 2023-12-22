@@ -1,5 +1,7 @@
+import sys
 input = []
-
+print(sys.getrecursionlimit())
+sys.setrecursionlimit(6000)
 def outofbounds(x, y, grid):
     if not 0 <= y < len(grid) or not 0 <= x < len(grid[0]):
         print("oops ur out")
@@ -12,7 +14,7 @@ def printy(grid):
 
 
 
-with open('test.txt') as f:
+with open('input.txt') as f:
     for index, line in enumerate(f):
         line = line.strip()
         input.append([c for c in line])
@@ -48,7 +50,7 @@ def beam(x, y, dir, grid):
         elif curr_tile == "\\":
             beam(x,y - 1, "u",grid)
         elif curr_tile == "/":
-            beam(x,y - 1, "d",grid)
+            beam(x,y + 1, "d",grid)
         else:
             beam(x - 1, y, "l", grid)
 
